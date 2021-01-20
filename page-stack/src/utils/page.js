@@ -18,6 +18,7 @@ class Page {
   }
 
   // 页面入栈
+
   pushPage(type) {
     const domNode = this.render();
     const rootChildNodes = this.root.childNodes;
