@@ -21,5 +21,4 @@ npm run build --report
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ### 参考
-- https://yy9306.github.io/studyPath/stack-module/build/index.html
 - https://codesandbox.io/s/affectionate-fire-td53y?file=/src/components/HelloWorld.vue
