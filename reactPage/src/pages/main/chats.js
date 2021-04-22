@@ -28,12 +28,12 @@ const domStr = `<div class="page page1" >
   </li>
   <li class="list">
     <div class="list__avatar"></div>
-    <div class="list__msg">
+    <div class="list__msg" id="stateDom">
       <p class="list__msg--detail">
-        <span class="name">当前state值</span>
+        <span class="name">点击修改state</span>
         <span class="time"></span>
       </p>
-      <p class="text">点击修改state</p>
+      <p class="text">.....</p>
     </div>
   </li>
 </ul>

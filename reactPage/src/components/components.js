@@ -1,10 +1,81 @@
 // import  {getObjectProperty} from '@/utils/index'
- 
+class Dep {
+  constructor() {
+    this.subs = []
+  }
+  addSub(sub) {
+    this.subs.push(sub);
+  }
+  notify(key) {
+    this.subs.forEach(function (sub) {
+      sub.update(key);
+    });
+  }
+}
+class Observer {
+  constructor(state) {
+    this.state = state;
+    this.walk(state);
+  }
+  walk(state) {
+    Object.keys(state).forEach((key) => {
+      this.defineReactive(state, key, state[key]);
+    });
+  }
+  defineReactive(state, key, val) {
+    const dep = new Dep();
+    Object.defineProperty(state, key, {
+      enumerable: true,
+      configurable: true,
+      get: () => {
+        if (Dep.target) {
+          dep.addSub(Dep.target);
+        }
+        return val;
+      },
+      set: function (newVal) {
+        if (newVal === val) {
+          return;
+        }
+        val = newVal;
+        dep.notify(key);
+      }
+    });
+  }
+}
+class Watcher {
+  constructor(vm) {
+    this.vm = vm
+    this.get();
+    this.changeKey = ''
+  }
+  update(key) {
+    this.changeKey = key
+    this.run()
+  }
+  run() {
+    // 直接进行数据更新操作
+    this.vm.stateEle.innerHTML = this.vm.state[this.changeKey]
+    // var value = this.vm.state[this.exp];
+    // var oldVal = this.value;
+    // if (value !== oldVal) {
+    //   this.value = value;
+    //   this.stateEle.innerHtml = this.state
+    //   this.cb.call(this.vm, value, oldVal);
+    // }
+  }
+  get() {
+    // 访问data，触发 get 执行，把当前的 Watcher 实例，添加到 Dep 中
+    Dep.target = this;
+    Object.keys(this.vm.state).forEach(item=>{
+      console.log(this.vm.state[item])
+    })
+    // 添加成功之后，释放掉自身，其他的实例还需要该引用
+    Dep.target = null;
+  }
+}
 class Component {
-  
   constructor(parentNode) {
-    console.log(parentNode)
-  
     // 可以判断parentNode 是否是node节点，如果是直接赋值，如果不是document.querySelector(parentNode)
     this.state = {}
     this.parentNode = parentNode ||(document.getElementById("root"))
@@ -25,15 +96,6 @@ class Component {
     this.componentDidUpdate && this.componentDidUpdate()
   }
   modifyState(preState, stateChange) {
-    // for (let p in preState) {
-    //   if (newState[p] !== undefined) {
-    //     if (preState[p] === undefined || getObjectProperty(preState[p]) !== '[object Object]') {
-    //       preState[p] = newState[p]
-    //     } else {
-    //       this.modifyState(preState[p], newState[p])
-    //     }
-    //   }
-    // }
     if(typeof stateChange === 'function'){
       Object.assign( this.state, stateChange(preState) );
     }else{
@@ -41,6 +103,10 @@ class Component {
     }
   }
   setState(stateChange,cb) {
+    /*监听和订阅 */
+    new Observer(this.state)
+    new Watcher(this)
+    console.log(this.state)
     if (!this.state) {
       this.state = stateChange
       this.update()
@@ -51,12 +117,6 @@ class Component {
     this.update()
     cb&&cb()
   }
-  // setState(stateChange,cb){
-  //   // this.prevState  = this.state
-  //   if(!this.state){
-  //      this.state  = object.assign()
-  //   }
-  // }
 }
 export default Component
 /**

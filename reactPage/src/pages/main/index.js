@@ -19,11 +19,13 @@ class MainPage extends Components {
       teacher: 'mentor',
       classes:['js','react','vue']
     }
+    this.stateEle = document.getElementById("stateDom")
+    // (state,key)
   }
   render() {
     console.log("main page")
     // this.state  = {}  ?
-    console.log("this.state",this,this.state)
+    // console.log("this.state",this,this.state)
     return mainPageDom
   }
  
@@ -34,23 +36,21 @@ class MainPage extends Components {
     /**
      * 模拟修改state
      */
-     setTimeout(() => {
-      this.changeMyState()
-      console.log(this)
-     }, 0);
+    document.getElementById('stateDom').addEventListener("click",this.changeMyState.bind(this))
   }
   changeMyState(){
+    // - 对象格式
     // this.setState({
-    //   pageName: 'modify pageIndex',
     //   classes:'all stack'
     // },()=>{
     //   console.log('state',this.state)
     // })
+    // - 函数格式
     this.setState((prevState)=>{
       return {
         classes:`I need to study all, ${prevState.classes}`
       }
-    })
+    } )
   }
 }
 export default MainPage;

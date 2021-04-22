@@ -1,6 +1,6 @@
 
-import Stack from './stack';
-import { addClass, removeClass } from './index';
+import Stack from '../utils/stack';
+import { addClass, removeClass } from '../utils/index';
 window.routerStack = new Stack();
 class Router {
   constructor() {
