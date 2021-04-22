@@ -12,6 +12,7 @@ class Dep {
     });
   }
 }
+
 class Observer {
   constructor(state) {
     this.state = state;
@@ -56,13 +57,6 @@ class Watcher {
   run() {
     // 直接进行数据更新操作
     this.vm.stateEle.innerHTML = this.vm.state[this.changeKey]
-    // var value = this.vm.state[this.exp];
-    // var oldVal = this.value;
-    // if (value !== oldVal) {
-    //   this.value = value;
-    //   this.stateEle.innerHtml = this.state
-    //   this.cb.call(this.vm, value, oldVal);
-    // }
   }
   get() {
     // 访问data，触发 get 执行，把当前的 Watcher 实例，添加到 Dep 中
@@ -106,7 +100,6 @@ class Component {
     /*监听和订阅 */
     new Observer(this.state)
     new Watcher(this)
-    console.log(this.state)
     if (!this.state) {
       this.state = stateChange
       this.update()

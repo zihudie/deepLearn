@@ -46,6 +46,7 @@ class MainPage extends Components {
     //   console.log('state',this.state)
     // })
     // - 函数格式
+    console.log("change")
     this.setState((prevState)=>{
       return {
         classes:`I need to study all, ${prevState.classes}`
