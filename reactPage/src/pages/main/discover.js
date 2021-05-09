@@ -25,7 +25,6 @@ const domStr = `<div class="page page3" >
     </div>
   </li>
 </ul>
-
 <ul>
   <li class="list">
     <div class="list__avatar"></div>

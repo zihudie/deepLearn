@@ -72,20 +72,33 @@ class Component {
   constructor(parentNode) {
     // 可以判断parentNode 是否是node节点，如果是直接赋值，如果不是document.querySelector(parentNode)
     this.state = {}
-    this.parentNode = parentNode ||(document.getElementById("root"))
+     console.log('parentNode', typeof parentNode)
+    if(typeof parentNode === 'string'){
+      this.parentNode =   document.getElementById(parentNode || "root")
+    }else{
+      this.parentNode = parentNode  
+    }
+  }
+  init(){
     this.componentWillMount && this.componentWillMount()
     this.compile()
     this.componentDidMount && this.componentDidMount()
+    this.renderDom &&  (setTimeout(() => {
+      this.renderDom()
+    }, 10))
   }
+  
   compile(type) {
     const renderDom = this.render()
     if(type !== 'update'){
-      this.parentNode.insertAdjacentHTML('beforeend', renderDom)
+      console.log(this.parentNode)
+      this.parentNode && this.parentNode.insertAdjacentHTML('beforeend', renderDom)
     }
   }
   update() {
     this.componentWillUpdate && this.componentWillUpdate()
     if(this.shouldComponentUpdate && !this.shouldComponentUpdate()) return
+    // 直接修改parent的InnerHTML
     this.compile('update')
     this.componentDidUpdate && this.componentDidUpdate()
   }
@@ -100,6 +113,7 @@ class Component {
     /*监听和订阅 */
     new Observer(this.state)
     new Watcher(this)
+
     if (!this.state) {
       this.state = stateChange
       this.update()
