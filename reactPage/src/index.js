@@ -11,7 +11,7 @@ import chat from './pages/chat'
 import profile from './pages/profile'
 
 // 将事件a绑定
-import viewChange from './utils/viewChange';
+// import viewChange from './utils/viewChange';
 
 // import './utils/setRem';
 import './style/base.css';
