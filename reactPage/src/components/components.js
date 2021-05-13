@@ -1,80 +1,11 @@
 // import  {getObjectProperty} from '@/utils/index'
-class Dep {
-  constructor() {
-    this.subs = []
-  }
-  addSub(sub) {
-    this.subs.push(sub);
-  }
-  notify(key) {
-    this.subs.forEach(function (sub) {
-      sub.update(key);
-    });
-  }
-}
-
-class Observer {
-  constructor(state) {
-    this.state = state;
-    this.walk(state);
-  }
-  walk(state) {
-    Object.keys(state).forEach((key) => {
-      this.defineReactive(state, key, state[key]);
-    });
-  }
-  defineReactive(state, key, val) {
-    const dep = new Dep();
-    Object.defineProperty(state, key, {
-      enumerable: true,
-      configurable: true,
-      get: () => {
-        if (Dep.target) {
-          dep.addSub(Dep.target);
-        }
-        return val;
-      },
-      set: function (newVal) {
-        if (newVal === val) {
-          return;
-        }
-        val = newVal;
-        dep.notify(key);
-      }
-    });
-  }
-}
-class Watcher {
-  constructor(vm) {
-    this.vm = vm
-    this.get();
-    this.changeKey = ''
-  }
-  update(key) {
-    this.changeKey = key
-    this.run()
-  }
-  run() {
-    // 直接进行数据更新操作
-    this.vm.stateEle.innerHTML = this.vm.state[this.changeKey]
-  }
-  get() {
-    // 访问data，触发 get 执行，把当前的 Watcher 实例，添加到 Dep 中
-    Dep.target = this;
-    Object.keys(this.vm.state).forEach(item=>{
-      console.log(this.vm.state[item])
-    })
-    // 添加成功之后，释放掉自身，其他的实例还需要该引用
-    Dep.target = null;
-  }
-}
+ 
 class Component {
-  constructor(parentNode) {
+  constructor(parentNode='root') {
     // 可以判断parentNode 是否是node节点，如果是直接赋值，如果不是document.querySelector(parentNode)
     this.state = {}
-     console.log('parentNode', typeof parentNode)
     if(typeof parentNode === 'string'){
-      this.parentNode =   document.getElementById(parentNode || "root")
+      this.parentNode =   document.getElementById(parentNode)
     }else{
       this.parentNode = parentNode  
     }
@@ -90,15 +21,11 @@ class Component {
   
   compile(type) {
     const renderDom = this.render()
-    if(type !== 'update'){
-      console.log(this.parentNode)
-      this.parentNode && this.parentNode.insertAdjacentHTML('beforeend', renderDom)
-    }
+    this.parentNode.innerHTML  = renderDom
   }
   update() {
     this.componentWillUpdate && this.componentWillUpdate()
     if(this.shouldComponentUpdate && !this.shouldComponentUpdate()) return
-    // 直接修改parent的InnerHTML
     this.compile('update')
     this.componentDidUpdate && this.componentDidUpdate()
   }
@@ -110,10 +37,6 @@ class Component {
     }
   }
   setState(stateChange,cb) {
-    /*监听和订阅 */
-    new Observer(this.state)
-    new Watcher(this)
-
     if (!this.state) {
       this.state = stateChange
       this.update()

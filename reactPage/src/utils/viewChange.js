@@ -16,8 +16,11 @@ const viewChange = function(router) {
       }
     }
   })
+ 
   /**
    * 浏览器的路由监控  进行解析操作
-   */
+   */  
 }
+
+
 export default viewChange

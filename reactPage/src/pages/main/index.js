@@ -9,12 +9,8 @@ import me from './me'
 class MainPage extends Components {
   constructor(parentNode) {
     super(parentNode)
-    this.state = {
-      pageName: 'index',
-      teacher: 'mentor',
-      classes:['js','react','vue']
-    }
-    this.stateEle = document.getElementById("stateDom")
+  
+     
   }
   render() {
     console.log("main page")
@@ -44,22 +40,6 @@ class MainPage extends Components {
     const tab = new Tab(0);
     tab.init();
   }
-  changeMyState(){
-    // - 对象格式
-    // this.setState({
-    //   classes:'all stack'
-    // },()=>{
-    //   console.log('state',this.state)
-    // })
-    // - 函数格式
-    console.log("change")
-    this.setState((prevState)=>{
-      return {
-        classes:`I need to study all, ${prevState.classes}`
-      }
-    } )
-  }
 }
 export default MainPage;
-
-
+ 

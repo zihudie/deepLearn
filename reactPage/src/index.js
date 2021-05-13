@@ -1,7 +1,7 @@
 // import React from 'react';
 // import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 import Router from './components/router';
 /**
  * 
@@ -11,12 +11,9 @@ import chat from './pages/chat'
 import profile from './pages/profile'
 
 // 将事件a绑定
-// import viewChange from './utils/viewChange';
-
-// import './utils/setRem';
 import './style/base.css';
 import './style/index.less';
-
+const  path =  window.location.pathname
 window.pages = {
   chat,
   profile,
@@ -24,14 +21,23 @@ window.pages = {
 }
 
 FastClick.attach(document.body);
-/**
- * 引入mainPage [首頁]
- */
-const rootDom = document.getElementById('root')
+// const rootDom = document.getElementById('root')
 // 初始化首页
-new MainPage(rootDom).init()
-
+// new MainPage(rootDom).init()
+// 路由实例化
 window.router = new Router();
-// viewChange(window.router)
+// 注册路由
+// 注册首页
+window.router.add('/',()=>{
+  new MainPage().init()
+})
+// chat页面
+window.router.add('/chat',()=>{
+   new chat().init()
+})
+// 个人资料页面
+window.router.add('/profile',()=>{
+  new profile().init()
+})
 
-registerServiceWorker();
+window.router.init('/')

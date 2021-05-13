@@ -96,7 +96,6 @@
    * 获取栈的长度
    */
   getLen() {
-    console.log('getLen:', this.top);
     return this.top;
   }
 }
