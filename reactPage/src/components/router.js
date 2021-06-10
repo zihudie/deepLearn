@@ -1,7 +1,9 @@
 
 import Stack from '../utils/stack';
 import { addClass, removeClass } from '../utils/index';
-window.routerStack = new Stack();
+const routerStack = new Stack();
+
+// 通过路由api和  path  关联到组件
 class Router {
   constructor() {
     this.root = document.getElementById('root');
@@ -13,52 +15,48 @@ class Router {
     this.router[path] = callBack
   }
   init(path){
-    // this.push(this.router[path]())
     this.pushState(path)
     this.listen()
   }
   // 入栈
   push() {
     this.setCurrentNode();
-    window.routerStack.push(this.currentNode);
+    routerStack.push(this.currentNode);
      // 栈顶元素展示
-    addClass(window.routerStack.peek(), 'slider-right-enter');
-    
-    if (window.routerStack.getLen() > 1) {
-      removeClass(window.routerStack.peek(), 'slider-left-leave');
+    addClass(routerStack.peek(), 'slider-right-enter');
+    if (routerStack.getLen() > 1) {
+      removeClass(routerStack.peek(), 'slider-left-leave');
       // 上一个页面隐藏
-      addClass(window.routerStack.getLastChild(), 'slider-left-leave');
-      removeClass(window.routerStack.getLastChild(), 'slider-right-enter');
+      addClass(routerStack.getLastChild(), 'slider-left-leave');
+      removeClass(routerStack.getLastChild(), 'slider-right-enter');
       return 
     }
   }
   // 出栈
   goBack() {
 
-    console.log(window.routerStack)
-    
-    if(window.routerStack.getLen()<=1) return
+    if(routerStack.getLen()<=1) return
     // console.log(this.router)
-    const curTopNode = window.routerStack.peek();
+    const curTopNode = routerStack.peek();
     // 原栈顶元素隐藏
     removeClass(curTopNode, 'slider-right-enter');
     removeClass(curTopNode, 'slider-left-enter');
     addClass(curTopNode, 'slider-right-leave');
     // 栈定元素弹出
-    window.routerStack.pop();
+    routerStack.pop();
     // 新栈顶元素激活展示
-    removeClass(window.routerStack.peek(), 'slider-left-leave');
-    removeClass(window.routerStack.peek(), 'slider-right-leave');
-    addClass(window.routerStack.peek(), 'slider-left-enter');
-    const  peekDom   = window.routerStack.peek()
+    removeClass(routerStack.peek(), 'slider-left-leave');
+    removeClass(routerStack.peek(), 'slider-right-leave');
+    addClass(routerStack.peek(), 'slider-left-enter');
+    const  peekDom   = routerStack.peek()
     
     this.root.removeChild(curTopNode)
     this.root.appendChild(peekDom)
     // curTopNode.addEventListener('animationend', () => {
     //   // this.root.removeChild(curTopNode);
-    //   console.log(window.routerStack.peek())
+    //   console.log(routerStack.peek())
     //   // this.root.innerHTML  = ''
-    //   this.root.appendChild(window.routerStack.peek())
+    //   this.root.appendChild(routerStack.peek())
     // });
     window.history.go(-1)
   }
@@ -75,7 +73,7 @@ class Router {
     // 路由监听
     window.onpopstate = () => {
       const path =  window.location.pathname
-      console.log('......路由发生改变',path,window.routerStack)
+      console.log('......路由发生改变',path,routerStack)
       if(!path) return
       // 如果是返回 需要pop ,只有前进的时候才入栈
       // 如何将页面栈和路由栈更好的结合？？？？

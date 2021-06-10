@@ -10,17 +10,18 @@ class Component {
       this.parentNode = parentNode  
     }
   }
-  init(){
+  init(isRender){
     this.componentWillMount && this.componentWillMount()
-    this.compile()
-    this.componentDidMount && this.componentDidMount()
-    this.renderDom &&  (setTimeout(() => {
-      this.renderDom()
-    }, 10))
+    this.compile(isRender)
+    // this.componentDidMount && this.componentDidMount()
   }
   
-  compile(type) {
+  compile(isRender) {
     const renderDom = this.render()
+    if(isRender){
+      console.log(renderDom)
+      return  renderDom
+    }
     this.parentNode.innerHTML  = renderDom
   }
   update() {

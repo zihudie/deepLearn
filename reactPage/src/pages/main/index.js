@@ -7,11 +7,6 @@ import discover from './discover'
 import me from './me'
  
 class MainPage extends Components {
-  constructor(parentNode) {
-    super(parentNode)
-  
-     
-  }
   render() {
     console.log("main page")
     // this.state  = {}  ?
@@ -24,6 +19,7 @@ class MainPage extends Components {
     return (
       `<div class="main" id="main">
        <div class="page page1" id="page1">
+       ${new chats("page1").init('render')}
       </div>
       <div class="page page2" id="page2">
       </div>
@@ -34,11 +30,11 @@ class MainPage extends Components {
   }
   componentDidMount() {
     // 插入对应的页面
-    new chats("page1").init()
     new contacts("page2").init()
     // tab 绑定事件 默认第*个TAB 展示
     const tab = new Tab(0);
     tab.init();
+    console.log(new chats("page1").init('d'))
   }
 }
 export default MainPage;

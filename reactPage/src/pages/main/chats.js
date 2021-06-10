@@ -15,6 +15,12 @@ class chats extends Components {
     }
   }
   render() {
+    // let arr = [23, 12, 32, 5, 21, 7, 1]
+    // arr.sort((a,b)=>{
+    //   console.log(a,b)
+    //   return a-b
+    // })
+    // console.log(arr)
     return (
       `
       <header class="header">
@@ -66,9 +72,9 @@ class chats extends Components {
     })
   }
   componentDidMount(){
-    document.getElementById("changeState").addEventListener("click",()=>{ 
-      this.changeMyState()
-    })
+    // document.getElementById("changeState").addEventListener("click",()=>{ 
+    //   this.changeMyState()
+    // })
   }
   
 }
